@@ -1,0 +1,12 @@
+.cart_btn{
+    width: 100%;
+    text-align: center!important;
+    background-color: red;
+}
+.max_width_height_100{
+    max-width: 100px;
+    max-height: 100px;
+}
+.max_width_150{
+    max-width: 150px;
+}
