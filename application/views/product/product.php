@@ -21,10 +21,11 @@
                             <i class="fas fa-plus"></i>
                         </span>
                     </div>
-                    <button class="btn btn-default cart_btn" id="addtocart">
+                    <button class="btn btn-default cart_btn" id="add_to_cart">
                         Kosárba rakom
                     </button>
                 </div>
+                <h4 class="d-none" id="sucess_cart">Sikeresen hozzáadta a kosárhoz</h4>
             </div>
         </div>
     </div>
@@ -42,37 +43,31 @@
             $("#amount").val(Number($("#amount").val()) - 1);
         }
     }
-    $(document).on('click','#addtocart', function() {
-        if($('.size .selectedli_color').text() != '' && $('.color .selectedli').text() != ''){
-            var size_val = $('.size .selectedli_color').text();
-            var color_val = $('.color .selectedli').text();
-            var id = <?php if (isset($_SESSION['username'])){
-                    echo $_SESSION['user_id']; 
-                } else {
-                    echo 0;
-                } ?>;
-            var price =  <?php if ($product->sale_price <= $product->price) {
-                echo $product->sale_price;
-                } else {
-                    echo $product->vatprice;
-                } ?>;
-            $.ajax({
-                type: 'POST',
-                url: '<?php echo base_url('addToCart')?>',
-                data: {
-                    'amount': $("#amount").val(),
-                    'id': '<?php echo $product->id; ?>',
-                    'name': '<?php echo $product->name; ?>',
-                    'price': price,
-                    'user_id': id
-                },
-                success: function (msg) {
-                    $('#cart_to_add').addClass("hidden");
-                    $('#sucess_cart').removeClass("hidden").addClass("d-block");
-                    $('#cart_value').html(msg);
-                }
-            });
-        }
+    $(document).on('click','#add_to_cart', function() {
+        var size_val = $('.size .selectedli_color').text();
+        var color_val = $('.color .selectedli').text();
+        var id = <?php if (isset($_SESSION['username'])){
+                echo $_SESSION['user_id']; 
+            } else {
+                echo 0;
+            } ?>;
+        $.ajax({
+            type: 'POST',
+            url: '<?php echo base_url('add_to_cart')?>',
+            data: {
+                'amount': $("#amount").val(),
+                'id': '<?php echo $product->id; ?>',
+                'name': '<?php echo $product->name; ?>',
+                'price': '<?php echo $product->price; ?>',
+                'sale_price': '<?php echo $product->sale_price; ?>',
+                'user_id': id
+            },
+            success: function (msg) {
+                $('#add_to_cart').addClass("d-none");
+                $('#sucess_cart').removeClass("d-none").addClass("d-block");
+                $('#cart_value').html(msg);
+            }
+        });
     });
 </script>
 

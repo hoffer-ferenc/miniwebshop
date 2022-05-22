@@ -19,30 +19,32 @@
     <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNav" aria-controls="navbarNav" aria-expanded="false" aria-label="Toggle navigation">
         <span class="navbar-toggler-icon"></span>
     </button>
-    <div class="collapse navbar-collapse" id="navbarNav">
+    <div class="collapse navbar-collapse justify-content-center" id="navbarNav">
         <ul class="navbar-nav">
             <li class="nav-item active">
-                <a class="nav-link" href="#">Home</a>
+                <a class="nav-link" href="<?php echo base_url('products'); ?>">Termékek</a>
             </li>
-            <li class="nav-item">
-                <a class="nav-link" href="#">Features</a>
+            <li class="cart">
+                <a class="nav-link" href="<?php echo base_url('checkout'); ?>">
+                    <i class="fas fa-shopping-cart"></i>
+                    <span id="cart_value"><?php echo count($this->cart->contents()); ?></span>
+                </a>
             </li>
             <?php if (isset($_SESSION['username']) && $_SESSION['logged_in'] === true) : ?>
-                    <li class="logout">
-                        <a class="nav-link" href="<?php echo base_url('logout'); ?>">Kijelentkezés</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#">Rendeléseim</a>
+                </li>        
+                <li class="logout">
+                    <a class="nav-link" href="<?php echo base_url('logout'); ?>">Kijelentkezés</a>
+                </li>
             <?php else : ?>
-                    <li class="register">
-                        <a class="nav-link" href="<?php echo base_url('register'); ?>">Regisztráció</a>
-                    </li>
-                    <li class="login">
-                        <a class="nav-link" href="<?php echo base_url('login'); ?>">Bejelentkezés</a>
-                    </li>
+                <li class="register">
+                    <a class="nav-link" href="<?php echo base_url('register'); ?>">Regisztráció</a>
+                </li>
+                <li class="login">
+                    <a class="nav-link" href="<?php echo base_url('login'); ?>">Bejelentkezés</a>
+                </li>
             <?php endif; ?>
-
-            <li class="nav-item">
-                <a class="nav-link disabled" href="#">Disabled</a>
-            </li>
         </ul>
     </div>
 </nav>

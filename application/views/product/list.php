@@ -61,8 +61,8 @@
                 $('.pager_' + active_page).addClass('active');
                 $('#current_page').val(active_page);
             },
-          error:function(data){
-          }
+            error:function(data){
+            }
         });
     }
     $('#listsearch').keyup(function(){

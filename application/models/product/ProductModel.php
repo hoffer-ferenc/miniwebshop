@@ -84,4 +84,58 @@ class ProductModel extends CI_Model{
         return $query->row();
     }
     
+    public function addToCart(){
+        $cart_data = array(
+            'id' => $this->input->post("id"),
+            'qty' => $this->input->post("amount"),
+            'name' => $this->input->post("name"),
+            'price' => $this->input->post("price"),
+            'sale_price' => $this->input->post("sale_price"),
+        );
+        $query = $this->cart->insert($cart_data);
+        echo count($this->cart->contents());
+        return $query;
+    }
+
+    public function deleteCartItem(){
+        if(!empty($this->input->post("rowid"))){
+            $data = array('rowid' => $this->input->post("rowid"), 'qty' => 0);
+            $this->cart->update($data);
+            echo '1';
+        }else{
+            throw new Exception("...");
+        }
+
+    }
+
+    public function insertOrder(){
+        foreach($this->cart->contents() as $cart_data){
+            $order_items = array(
+                'idproduct' => $cart_data['id'],
+                'product_name' => $cart_data['name'],
+                'price' => $cart_data['size'],
+                'sale_price' => $cart_data['color'],
+                'amount' => $cart_data['qty'],
+                'shipping' => 1500,
+                'name' => $this->input->post('name'),
+                'email' => $this->input->post('email'),
+                'tel' => $this->input->post('tel'),
+                'zip' => $this->input->post('zip'),
+                'address' => $this->input->post('address'),
+                'city' => $this->input->post('city')
+            );
+            $this->db->insert('order_items', $order_items);
+
+            //készlet levonás
+            $this->db->from('products');
+            $this->db->where('id', $cart_data['id']);
+            $result = $this->db->get()->row();
+            $amount = $result->amount - $cart_data['qty'];
+
+            $this->db->where('id',$cart_data['id']);
+            $this->db->update('products', array('stock' => $amount));
+        }
+        $this->cart->destroy();
+    }
+    
 }
