@@ -6,7 +6,7 @@
         echo "</div>";
     }
     ?>
-    <div class="">
+    <div>
         <form class="form-horizontal d-md-flex" method="post" action="<?php echo base_url('save_checkout');?>">
         <div class="col-md-6 col-sm-12">
             <!--REVIEW ORDER-->
@@ -22,30 +22,60 @@
 
                             </div>
                             <div class="col-sm-6 col-xs-6">
-                                <div class="col-sm-12"><?php echo $items['name']; ?></div>
-                                <div class="col-sm-12"><small>Mennyiség: <?php echo $items['qty']; ?></small></div>
+                                <div class="col-sm-12">
+                                    <?php echo $items['name']; ?>
+                                </div>
+                                <div class="col-sm-12">
+                                    <small>
+                                        Mennyiség: <?php echo $items['qty']; ?>
+                                    </small>
+                                </div>
                             </div>
                             <div class="text-right">
-                                <h6><?php echo $items['price']; ?><span> Ft</span></h6>
+                                <h6><?php echo $items['price']; ?>
+                                    <span> Ft</span>
+                                </h6>
                             </div>
                             <div class="text-right">
-                                <a id="delete_cart_item" onclick="deleteItem('<?php echo $items['rowid']; ?>')" href="#"><i class="fa fa-trash" aria-hidden="true"></i></a>
+                                <a id="delete_cart_item" onclick="deleteItem('<?php echo $items['rowid']; ?>')" href="#">
+                                    <i class="fa fa-trash" aria-hidden="true"></i>
+                                </a>
                             </div>
-                        </div><div class="form-group"><hr/></div>
+                        </div>
+                        <div class="form-group">
+                            <hr/>
+                        </div>
                         <?php } ?>
                     </div>
                     <div class="form-group">
                         <div class="col-sm-12">
                             <small>Rendelés összege: </small>
-                            <div><span id="cart_total"><?php echo $this->cart->total(); ?></span><span> Ft</span></div>
+                            <div>
+                                <span id="cart_total">
+                                    <?php echo $this->cart->total(); ?>
+                                </span>
+                                <span> Ft</span>
+                            </div>
                         </div>
                         <div class="col-sm-12">
                             <small>Szállítási költség: </small>
-                            <div><span>1500</span><span> Ft</span></div>
+                            <div>
+                                <span>1500</span>
+                                <span> Ft</span>
+                            </div>
                         </div>
                         <div class="col-sm-12"><br>
                             <strong>Teljes összeg: </strong>
-                            <div><span id="full_cart_total"><?php $cart = $this->cart->total();$shipping=1500; $total=$shipping+$cart;echo $total ?></span><span> Ft</span></div>
+                            <div>
+                                <span id="full_cart_total">
+                                    <?php $cart = $this->cart->total();
+                                        $shipping=1500; 
+                                        $total = $shipping + $cart;
+                                        echo $total;
+                                    ?>
+                                </span>
+                                <span> Ft</span>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -108,8 +138,6 @@
             <!--SHIPPING METHOD END-->
         </div>
         </form>
-    </div>
-    <div class="row cart-footer">
     </div>
 </div>
 <script>

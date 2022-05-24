@@ -64,12 +64,15 @@ if ($method === 'GET'){
     $route['products'] = 'product/Product/getProducts';
     $route['products/list'] = 'product/Product/getProductList';
     $route['product/(:num)'] = "product/Product/getSingleProduct/$1";
-    $route['checkout'] = "product/Product/getCart";
+    $route['checkout'] = "order/Order/getCart";
+    $route['orders'] = "order/Order/getOrders";
+    $route['order/(:num)'] = "order/Order/getOrderItems/$1";
 }
 if ($method === 'POST'){
-    $route['add_to_cart'] = 'product/Product/addProductToCart';
-    $route['delete_cart_item'] = 'product/Product/deleteCartItem';
-    $route['save_checkout'] = 'product/Product/saveCheckout';
+    $route['add_to_cart'] = 'order/Order/addProductToCart';
+    $route['delete_cart_item'] = 'order/Order/deleteCartItem';
+    $route['save_checkout'] = 'order/Order/saveCheckout';
+    $route['delete_order'] = 'order/Order/deleteOrder';
 }
 if ($method === 'PUT'){
     

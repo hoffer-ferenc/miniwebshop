@@ -32,7 +32,7 @@
             </li>
             <?php if (isset($_SESSION['username']) && $_SESSION['logged_in'] === true) : ?>
                 <li class="nav-item">
-                    <a class="nav-link" href="#">Rendeléseim</a>
+                    <a class="nav-link" href="<?php echo base_url('orders'); ?>">Rendeléseim</a>
                 </li>        
                 <li class="logout">
                     <a class="nav-link" href="<?php echo base_url('logout'); ?>">Kijelentkezés</a>

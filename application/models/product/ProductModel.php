@@ -53,14 +53,40 @@ class ProductModel extends CI_Model{
         return $this->db->count_all("products");
     }
     
-    public function fill(){
-        //$string = 'INSERT INTO `products` (`name`, `description`, `Bzip_code`, `Bcity`, `Baddress`, `Btel`, `Bemail`, `sameadr`, `Czip_code`, `Ccity`, `Caddress`, `Ctel`, `order_total`, `order_status`, `date_record`)';
-        
-        //for($i = 0; $i <= 1000; $i++){
-           // $string .= 'VALUES (7, 'Hoffer Ferenc Joachim', '', 2750, 'Nagykőrös', 'Sólyom utca 3.-5.', '06205262456', 'ferike.hoffer@gmail.com', 0, 0, '', '', '', 10000, 2, '2021-10-26 22:21:15'),';
-        //}
-        
-        for($i = 0; $i <= 1000; $i++){
+    //hatékonyabb termék import
+    public function fill($max_generate = 1000){
+        $string = 'INSERT INTO `products` (`name`, `description`, `price`, `sale_price`, `stock`, `available`, `image`, `status`) VALUES ';
+        for ($i = 1; $i <= $max_generate - 1; $i++) {
+            $price = rand(3000, 10000);
+            $sale_price = $price - rand(1000, 2500);
+            $string .= '('.'"teszt'.$i.'",'
+                . '"Lorem Ipsum is simply dummy text."'.','
+                . $price.','
+                . $sale_price.','
+                . rand(3, 30).','
+                . rand(0, 1).',"'
+                . base_url().'/assets/images/dummy.jpg"'.','
+                . rand(0, 1).'),'
+            ;
+        }
+        $price = rand(3000, 10000);
+        $sale_price = $price - rand(1000, 2500);
+        $string .= '('.'"teszt'.$max_generate.'",'
+            . '"Lorem Ipsum is simply dummy text."'.','
+            . $price.','
+            . $sale_price.','
+            . rand(3, 30).','
+            . rand(0, 1).',"'
+            . base_url().'/assets/images/dummy.jpg"'.','
+            . rand(0, 1).');'
+        ;
+        $query = $this->db->query($string);
+        return $query->result();
+    }
+    
+    //lassabb módszer
+    public function fill2($max_generate = 1000){
+        for($i = 1; $i <= $max_generate; $i++){
             $price = rand(3000, 10000);
             $sale_price = $price - rand(1000, 2500);
             $import_data = array(
@@ -75,7 +101,6 @@ class ProductModel extends CI_Model{
             );
             $this->db->insert('products', $import_data);
         }
-
     }
 
     public function getProductById($id = null){
@@ -84,58 +109,6 @@ class ProductModel extends CI_Model{
         return $query->row();
     }
     
-    public function addToCart(){
-        $cart_data = array(
-            'id' => $this->input->post("id"),
-            'qty' => $this->input->post("amount"),
-            'name' => $this->input->post("name"),
-            'price' => $this->input->post("price"),
-            'sale_price' => $this->input->post("sale_price"),
-        );
-        $query = $this->cart->insert($cart_data);
-        echo count($this->cart->contents());
-        return $query;
-    }
 
-    public function deleteCartItem(){
-        if(!empty($this->input->post("rowid"))){
-            $data = array('rowid' => $this->input->post("rowid"), 'qty' => 0);
-            $this->cart->update($data);
-            echo '1';
-        }else{
-            throw new Exception("...");
-        }
-
-    }
-
-    public function insertOrder(){
-        foreach($this->cart->contents() as $cart_data){
-            $order_items = array(
-                'idproduct' => $cart_data['id'],
-                'product_name' => $cart_data['name'],
-                'price' => $cart_data['size'],
-                'sale_price' => $cart_data['color'],
-                'amount' => $cart_data['qty'],
-                'shipping' => 1500,
-                'name' => $this->input->post('name'),
-                'email' => $this->input->post('email'),
-                'tel' => $this->input->post('tel'),
-                'zip' => $this->input->post('zip'),
-                'address' => $this->input->post('address'),
-                'city' => $this->input->post('city')
-            );
-            $this->db->insert('order_items', $order_items);
-
-            //készlet levonás
-            $this->db->from('products');
-            $this->db->where('id', $cart_data['id']);
-            $result = $this->db->get()->row();
-            $amount = $result->amount - $cart_data['qty'];
-
-            $this->db->where('id',$cart_data['id']);
-            $this->db->update('products', array('stock' => $amount));
-        }
-        $this->cart->destroy();
-    }
     
 }
